@@ -1,0 +1,50 @@
+{{#if userType}}
+  {{>adminNavbar}}
+{{else}}
+  {{>navbar}}
+{{/if}}
+
+<h1 class="d-flex justify-content-center">Mesas</h1>
+
+<div class="table-responsive container">
+  <table class="table table-dark table-hover table-striped align-middle">
+    <thead>
+      <tr>
+        <td class="d-none" scope="col">Id Venta</td>
+        <td scope="col">Mesa</td>
+        <td scope="col">Usuario</td>
+        <td scope="col">Total</td>
+        <td scope="col">Estado</td>
+        <td scope="col">Acción</td>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each tables}}
+          <tr class='local-table' id="{{this}}">
+            <td class="d-none" ></td>
+            <td>{{this}}</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+              <a href="/tables/new/{{this}}" type="button" class="btn btn-success">
+                Nueva
+              </a>
+            </td>
+          </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
+
+{{#unless tables}}
+<div class="container d-flex justify-content-center">
+  <a href="/tables/new" class="btn btn-secondary ">Nueva Mesa</a>
+</div>
+{{/unless}}
+
+<div>
+  {{id}}
+</div>
+
+    <script src="/js/tables.js"></script>

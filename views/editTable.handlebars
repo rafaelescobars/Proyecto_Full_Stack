@@ -1,0 +1,48 @@
+{{#if userType}}
+  {{>adminNavbar}}
+{{else}}
+  {{>navbar}}
+{{/if}}
+
+<h1 class="d-flex justify-content-center">Editar Mesa {{localTable}}</h1>
+<h2 class="d-none">{{localTable}}</h2>
+
+<div class="table-responsive container">
+  <table class="table table-dark table-hover table-striped align-middle">
+    <thead>
+      <tr>
+        <td scope="col">Producto</td>
+        <td scope="col">Cantidad</td>
+        <td scope="col">Precio</td>
+        <td scope="col">Total</td>
+        <td scope="col">Acción</td>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each tableProducts}}
+          <tr>
+            <td>{{this.product_name}}</td>
+            <td>{{this.quantity}}</td>
+            <td>{{this.sale_price}}</td>
+            <td>{{this.total}}</td>
+            <td>
+              <a href="/tables/{{this.local_table}}/product/edit/{{this.id}}" type="button" class="btn btn-primary">
+                Editar
+              </a>
+              <a onclick="deleteProductTableClick(event,{{this.id}})" type="button" class="btn btn-danger">
+                Eliminar
+              </a>
+            </td>
+          </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
+
+<div class="container d-flex justify-content-center">
+  <a href="/tables/product/new" class="btn btn-secondary ">Agragar Producto</a>
+</div>
+
+<div>
+  {{id}}
+</div>

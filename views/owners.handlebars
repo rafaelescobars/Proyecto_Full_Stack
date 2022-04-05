@@ -1,0 +1,41 @@
+{{#if userType}}
+  {{>adminNavbar}}
+{{else}}
+  {{>navbar}}
+{{/if}}
+
+<h1 class="d-flex justify-content-center">Dueños</h1>
+
+<div class="table-responsive container">
+  <table class="table table-dark table-hover table-striped align-middle">
+    <thead>
+      <tr>
+        <td scope="col">Nombre</td>
+        <td scope="col">Acción</td>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each owners}}
+      <tr>
+        <td>{{this.name}}</td>
+        <td>
+          <a href="/owners/edit/{{this.id}}" type="button" class="btn btn-primary">
+            Editar
+          </a>
+          <a onclick="deleteOwnerClick(event,{{this.id}})" type="button" class="btn btn-danger">
+            Eliminar
+          </a>
+        </td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
+
+<div class="container d-flex justify-content-center">
+  <a href="/owners/new" class="btn btn-secondary ">Nuevo Dueño</a>
+</div>
+
+<div>
+  {{id}}
+</div>

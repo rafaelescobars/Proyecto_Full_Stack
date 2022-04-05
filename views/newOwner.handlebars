@@ -1,0 +1,36 @@
+{{#if userType}}
+  {{>adminNavbar}}
+{{else}}
+  {{>navbar}}
+{{/if}}
+
+<div class="container d-flex justify-content-center mt-3">
+  <h1>Nuevo Dueño</h1>
+</div>
+
+<div class="container my-3 mx-0">
+  <div class="row row-cols-3">
+    <div class="col-md-3">
+
+    </div>
+    <div class="col-12 col-md-6">
+      <form onsubmit="newOwnerPost(event)">
+        <div class="mb-3">
+          <label for="" class="form-label">Nombre</label>
+          <input
+            type="text"
+            class="form-control"
+            id="name"
+            required
+          />
+        </div>
+        <div class="d-flex justify-content-center">
+          <button
+            class="btn btn-secondary"
+          >Aceptar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</div>
