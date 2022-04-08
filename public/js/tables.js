@@ -25,11 +25,8 @@ const getOcupiedTables = () => {
               <a href="/tables/edit/${saleId}" type="button" class="btn btn-primary">
                 Ver/Editar
               </a>
-              <a href="/tables/pay/${localTable}" type="button" class="btn btn-warning">
+              <a href="/tables/pay/${saleId}" type="button" class="btn btn-warning">
               Pagar
-            </a>
-            <a href="/tables/delete/${localTable}" type="button" class="btn btn-danger">
-            Eliminar
             </a>
             </td>`;
             }

@@ -6,6 +6,7 @@
 
 <h1 class="d-flex justify-content-center">Mesa {{localTable}}</h1>
 <h2 class="d-none">{{localTable}}</h2>
+<h3 class="d-none">{{saleId}}</h3>
 
 <div class="container d-flex justify-content-center mt-3">
   <h1>Agregar Producto</h1>
@@ -17,7 +18,7 @@
 
     </div>
     <div class="col-12 col-md-6">
-      <form onsubmit="newProductNewTablePost(event)">
+      <form onsubmit="newProductTablePost(event)">
         <div class="mb-3">
           <label for="" class="form-label">Producto</label>
           <select class="form-select " name="owner" id="productId" aria-label="Default select example" onchange="getProductPrice()" >
@@ -50,4 +51,4 @@
 
 </div>
 
-    <script src="/js/newTable.js"></script>
+    <script src="/js/newProductTable.js"></script>

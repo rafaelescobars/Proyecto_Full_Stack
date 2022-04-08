@@ -49,24 +49,29 @@ app.post("/login", (req, res) => {
   if (req.body.email != "" && req.body.password != "") {
     loginPostQuery(data).then(
       (value) => {
-        if (
-          req.body.email == value.email &&
-          req.body.password == value.password
-        ) {
-          const token = jwt.sign(
-            {
-              data: value,
-            },
-            secretKey,
-            { expiresIn: "6h" }
-          );
+        try {
+          if (
+            req.body.email == value.email &&
+            req.body.password == value.password
+          ) {
+            const token = jwt.sign(
+              {
+                data: value,
+              },
+              secretKey,
+              { expiresIn: "6h" }
+            );
 
-          res.cookie("token", token);
-          res.sendStatus(200);
+            res.cookie("token", token);
+            res.sendStatus(200);
+          }
+        } catch (err) {
+          console.log(err);
         }
       },
       (reason) => {
         console.log(reason);
+        console.log("ok");
         res.redirect("/");
       }
     );
@@ -93,6 +98,10 @@ app.use("/tables", tables);
 //products
 const products = require("./routes/products.route");
 app.use("/products", products);
+
+//sales
+const sales = require("./routes/sales.route");
+app.use("/sales", sales);
 
 //listen
 app.listen(port, () => {

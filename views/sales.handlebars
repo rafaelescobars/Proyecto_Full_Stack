@@ -1,0 +1,30 @@
+{{#if userType}}
+  {{>adminNavbar}}
+{{else}}
+  {{>navbar}}
+{{/if}}
+
+<h1 class="d-flex justify-content-center">Ventas del día</h1>
+
+<div class="table-responsive container">
+  <table class="table table-dark table-hover table-striped align-middle">
+    <thead>
+      <tr>
+        <td scope="col">Dueño</td>
+        <td scope="col">Total</td>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each sales}}
+      <tr>
+        <td>{{this.owner}}</td>
+        <td>{{this.total}}</td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
+
+<div>
+
+</div>

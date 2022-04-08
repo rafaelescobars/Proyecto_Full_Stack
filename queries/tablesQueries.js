@@ -69,7 +69,7 @@ const localTablesGet = () => {
 };
 
 const tableGetQuery = (data) => {
-  const name = "tablesPostQuery";
+  const name = "tableGetQuery";
   const text = `
     SELECT ps.id AS id,
           p.name AS product_name, 
@@ -81,70 +81,58 @@ const tableGetQuery = (data) => {
     JOIN products p ON p.id=ps.product_id
     JOIN sales s ON s.id=ps.sale_id
     WHERE s.date=CURRENT_DATE
-    AND s.id=$1`;
+    AND s.id=$1
+    ORDER BY product_name`;
   const values = data;
   return pool.query(queryGen(name, text, values)).then((res) => res.rows);
 };
 
-const productSaleGetQuery = (data) => {
-  const name = "productSaleGetQuery";
-  const text = "SELECT * FROM products_sales WHERE id=$1";
+const addProductTablePutQuery = (data) => {
+  const name = "addProductTablePutQuery";
+  const text = `
+    UPDATE products_sales SET quantity=quantity+1 WHERE id=$1`;
   const values = data;
   return pool.query(queryGen(name, text, values)).then((res) => res.rows[0]);
 };
 
-const productSalePutQuery = (data) => {
-  const name = "productSalePutQuery";
-  const text =
-    "UPDATE products_sales SET product_id=$2, quantity=$3, sale_price=$4 WHERE id=$1 RETURNING sale_id";
+const subProductTablePutQuery = (data) => {
+  const name = "subProductTablePutQuery";
+  const text = `
+    UPDATE products_sales SET quantity=quantity-1 WHERE id=$1`;
   const values = data;
   return pool.query(queryGen(name, text, values)).then((res) => res.rows[0]);
 };
 
-// const userGetQuery = (data) => {
-//   const name = "userGetQuery";
-//   const text = "SELECT * FROM users WHERE id=$1";
-//   const values = data;
-//   return pool.query(queryGen(name, text, values)).then((res) => res.rows[0]);
-// };
+const productTableDeleteQuery = (data) => {
+  const name = "productTableDeleteQuery";
+  const text = "DELETE FROM products_sales WHERE id=$1";
+  const values = data;
+  return pool.query(queryGen(name, text, values));
+};
 
-// const userPutQuery = (data) => {
-//   const name = "userPutQuery";
-//   const text = "UPDATE users SET email=$2, password=$3 WHERE  id=$1";
-//   const values = data;
-//   return pool.query(queryGen(name, text, values)).then((res) => res.rows);
-// };
+const tableDeleteQuery = (data) => {
+  const name = "tableDeleteQuery";
+  const text = "DELETE FROM sales WHERE id=$1";
+  const values = data;
+  return pool.query(queryGen(name, text, values));
+};
 
-// const userDeleteQuery = (data) => {
-//   const name = "userDeleteQuery";
-//   const text = "DELETE FROM users WHERE id=$1";
-//   const values = data;
-//   return pool.query(queryGen(name, text, values));
-// };
-
-// const ownersGetQuery = (data) => {
-//   const name = "ownersGetQuery";
-//   const text = "SELECT * FROM owners ORDER BY id";
-//   const values = data;
-//   return pool.query(queryGen(name, text, values)).then((res) => res.rows);
-// };
-
-// const productsGetQuery = (data) => {
-//   const name = "productsGetQuery";
-//   const text = "SELECT * FROM products ORDER BY id";
-//   const values = data;
-//   return pool.query(queryGen(name, text, values)).then((res) => res.rows);
-// };
+const payTablePutQuery = (data) => {
+  const name = "payTablePutQuery";
+  const text = "UPDATE sales SET status=true, payment_type=$2 WHERE id=$1";
+  const values = data;
+  return pool.query(queryGen(name, text, values));
+};
 
 module.exports = {
   tablePostQuery,
   tablesGetQuery,
-  // userPutQuery,
-  // userGetQuery,
-  // userDeleteQuery,
   localTablesGet,
   tableGetQuery,
   productTablePostQuery,
-  productSaleGetQuery,
-  productSalePutQuery,
+  addProductTablePutQuery,
+  subProductTablePutQuery,
+  productTableDeleteQuery,
+  tableDeleteQuery,
+  payTablePutQuery,
 };

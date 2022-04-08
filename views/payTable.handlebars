@@ -44,4 +44,38 @@
   <a href="/tables/{{localTable}}/product/new/{{saleId}}" class="btn btn-secondary ">Agragar Producto</a>
 </div>
 
-    <script src="/js/editTable.js"></script>
+<div class="d-flex justify-content-center my-3">
+  <h2>Pagar</h2>
+</div>
+
+<div class="container-fluid my-3 mx-0">
+  <div class="row row-cols-3">
+    <div class="col-md-3">
+
+    </div>
+    <div class="col-12 col-md-6">
+      <form onsubmit="payTable(event,{{saleId}})">
+        <div>
+          <select id="payment-type" class="form-select" aria-label="Default select example">
+            <option value="Efectivo">Efectivo</option>
+            <option value="Tarjeta">Tarjeta</option>
+            <option value="Transferencia">Transferencia</option>
+          </select>
+        </div>
+        <div class="d-flex justify-content-center my-3">
+          <button
+            class="btn btn-secondary"
+          >Aceptar</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="col-md-3">
+      
+    </div>
+
+  </div>
+
+</div>
+
+    <script src="/js/payTable.js"></script>

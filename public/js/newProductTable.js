@@ -14,17 +14,20 @@ const getProductPrice = () => {
 
 window.onload = getProductPrice();
 
-const newProductNewTablePost = (e) => {
+const newProductTablePost = (e) => {
   e.preventDefault();
   const productId = document.querySelector("#productId").value;
   const productQuantity = document.querySelector("#productQuantity").value;
   const productPrice = document.querySelector("#productPrice").value;
   const localTable = document.querySelector("h2").innerHTML;
+  const saleId = document.querySelector("h3").innerHTML;
   const userId = document.querySelector("#userId").innerHTML;
 
-  const data = { localTable, userId, productId, productQuantity, productPrice };
+  console.log(saleId);
 
-  axios.post("/tables/new/products/new", data).then((value) => {
+  const data = { saleId, productId, productQuantity, productPrice };
+
+  axios.post(`/tables/product/new`, data).then((value) => {
     console.log(value);
     window.location = `/tables/edit/${value.data.sale_id}`;
   });

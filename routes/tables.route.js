@@ -3,16 +3,15 @@ const { Router } = require("express");
 
 const {
   tablePostQuery,
-  userPostQuery,
-  userGetQuery,
-  userPutQuery,
-  userDeleteQuery,
   tablesGetQuery,
   localTablesGet,
   tableGetQuery,
   productTablePostQuery,
-  productSaleGetQuery,
-  productSalePutQuery,
+  addProductTablePutQuery,
+  subProductTablePutQuery,
+  productTableDeleteQuery,
+  tableDeleteQuery,
+  payTablePutQuery,
 } = require("../queries/tablesQueries.js");
 
 const {
@@ -110,7 +109,34 @@ router.get("/product/price/:id", (req, res) => {
   }
 });
 
-//Route newUser POST
+//Route edit:SaleId GET
+router.get("/edit/:saleId", (req, res) => {
+  if (req.loggedUSer != undefined) {
+    // console.log(req.loggedUSer.admin);
+    const { saleId, localTable } = req.params;
+    // console.log(saleId);
+    tableGetQuery([saleId]).then(
+      (value) => {
+        // console.log(value);
+        res.render("editTable", {
+          saleId,
+          tableProducts: value,
+          localTable: value[0].local_table,
+          userType: req.loggedUSer.admin,
+          userId: req.loggedUSer.id,
+          userEmail: req.loggedUSer.email,
+        });
+      },
+      (reason) => {
+        console.log(reason);
+      }
+    );
+  } else {
+    res.redirect("/login");
+  }
+});
+
+//Route /new/products/new POST
 router.post("/new/products/new", (req, res) => {
   if (req.loggedUSer != undefined) {
     const { localTable, userId, productId, productQuantity, productPrice } =
@@ -128,7 +154,7 @@ router.post("/new/products/new", (req, res) => {
         });
         productTablePostQuery(dataProductsSales).then(
           (value) => {
-            console.log(value);
+            // console.log(value);
             res.send(value.rows[0]);
           },
           (reason) => {
@@ -143,16 +169,126 @@ router.post("/new/products/new", (req, res) => {
   }
 });
 
+//Route /product/add Put
+router.put("/product/add", (req, res) => {
+  if (req.loggedUSer != undefined) {
+    const { productTableId } = req.body;
+    // console.log(productTableId);
+    addProductTablePutQuery([productTableId]).then(
+      (value) => {
+        res.sendStatus(200);
+      },
+      (reason) => {
+        console.log(reason);
+      }
+    );
+  }
+});
+
+//Route /product/sub GET
+router.put("/product/sub", (req, res) => {
+  if (req.loggedUSer != undefined) {
+    const { productTableId } = req.body;
+    // console.log(productTableId);
+    subProductTablePutQuery([productTableId]).then(
+      (value) => {
+        res.sendStatus(200);
+      },
+      (reason) => {
+        console.log(reason);
+      }
+    );
+  }
+});
+
 //Route editUSer GET
-router.get("/edit/:saleId", (req, res) => {
+router.delete("/product", (req, res) => {
+  if (req.loggedUSer != undefined) {
+    // console.log(req.body);
+    const { productTableId, saleId } = req.body;
+    // console.log(productTableId);
+    productTableDeleteQuery([productTableId]).then(
+      (productTableDeleteValue) => {
+        tableGetQuery([saleId]).then(
+          (tableGetValue) => {
+            if ((tableGetValue = [])) {
+              tableDeleteQuery([saleId]).then(
+                (tableDeleteValue) => {
+                  // console.log(saleId);
+                  // console.log("ok");
+                },
+                (reason) => {
+                  console.log(reason);
+                }
+              );
+            }
+          },
+          (reason) => {
+            console.log(reason);
+          }
+        );
+        res.sendStatus(200);
+      },
+      (reason) => {
+        console.log(reason);
+      }
+    );
+  }
+});
+
+//Route /product/new/:saleId GET
+router.get("/:localTable/product/new/:saleId", (req, res) => {
+  if (req.loggedUSer != undefined) {
+    const { saleId, localTable } = req.params;
+    productsGetQuery().then(
+      (value) => {
+        res.render("newProductTable", {
+          saleId,
+          localTable,
+          products: value,
+          userType: req.loggedUSer.admin,
+          userId: req.loggedUSer.id,
+          userEmail: req.loggedUSer.email,
+        });
+      },
+      (reason) => {
+        console.log(reason);
+      }
+    );
+  } else {
+    res.redirect("/login");
+  }
+});
+
+//Route /new/products/new POST
+router.post("/product/new", (req, res) => {
+  if (req.loggedUSer != undefined) {
+    // const { saleId, productId, productQuantity, productPrice } =
+    //   req.body;
+
+    productTablePostQuery(Object.values(req.body)).then(
+      (value) => {
+        // console.log(value);
+        res.send(value.rows[0]);
+      },
+      (reason) => {
+        console.log(reason);
+      }
+    );
+  }
+});
+
+//Route /pay/:saleId GET
+router.get("/pay/:saleId", (req, res) => {
   if (req.loggedUSer != undefined) {
     // console.log(req.loggedUSer.admin);
-    const { saleId } = req.params;
+    const { saleId, localTable } = req.params;
     // console.log(saleId);
     tableGetQuery([saleId]).then(
       (value) => {
         // console.log(value);
-        res.render("editTable", {
+        res.render("payTable", {
+          saleId,
           tableProducts: value,
           localTable: value[0].local_table,
           userType: req.loggedUSer.admin,
@@ -169,81 +305,13 @@ router.get("/edit/:saleId", (req, res) => {
   }
 });
 
-//Route product/edit/:productSaleId
-router.get("/:localTable/product/edit/:productSaleId", (req, res) => {
+//Route pay PUT
+router.put("/pay", (req, res) => {
   if (req.loggedUSer != undefined) {
-    const { productSaleId, localTable } = req.params;
-    //  console.log(req.body);
-    productsGetQuery().then(
-      (value) => {
-        res.render("editProductTable", {
-          products: value,
-          productSaleId,
-          localTable,
-          userType: req.loggedUSer.admin,
-          userId: req.loggedUSer.id,
-          userEmail: req.loggedUSer.email,
-        });
-      },
-      (reason) => {
-        console.log(reason);
-      }
-    );
-  }
-});
-
-//Route product/edit/:productSaleId
-router.get("/products/edit/:productSaleId", (req, res) => {
-  if (req.loggedUSer != undefined) {
-    const { productSaleId } = req.params;
-    productSaleGetQuery([productSaleId]).then(
-      (value) => {
-        res.send(value);
-      },
-      (reason) => {
-        console.log(reason);
-      }
-    );
-  }
-});
-
-//Route product/edit/:productSaleId
-router.put("/product", (req, res) => {
-  if (req.loggedUSer != undefined) {
+    // console.log(saleId);
     // console.log(req.body);
-    productSalePutQuery(Object.values(req.body)).then(
+    payTablePutQuery(Object.values(req.body)).then(
       (value) => {
-        // console.log(value);
-        res.send(value);
-      },
-      (reason) => {
-        console.log(reason);
-      }
-    );
-  }
-});
-
-//Route editUser PUT
-router.put("/edit", (req, res) => {
-  if (req.loggedUSer != undefined) {
-    userPutQuery(Object.values(req.body)).then(
-      (value) => {
-        res.sendStatus("200");
-      },
-      (reason) => {
-        console.log(reason);
-      }
-    );
-  }
-});
-
-//Route deleteUser DELETE
-router.delete("/delete/:id", (req, res) => {
-  if (req.loggedUSer != undefined) {
-    const { id } = req.params;
-    userDeleteQuery([id]).then(
-      (value) => {
-        // res.redirect('/')
         res.sendStatus(200);
       },
       (reason) => {
