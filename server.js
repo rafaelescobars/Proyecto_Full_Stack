@@ -4,7 +4,7 @@ const { loginPostQuery } = require("./queries/queries.js");
 const express = require("express");
 const { engine } = require("express-handlebars");
 const app = express();
-const port = process.env.POR || 3000;
+const port = process.env.PORT || 3000;
 
 //handlebars
 app.engine("handlebars", engine());
