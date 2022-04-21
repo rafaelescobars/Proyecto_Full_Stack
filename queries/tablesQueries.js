@@ -124,6 +124,14 @@ const payTablePutQuery = (data) => {
   return pool.query(queryGen(name, text, values));
 };
 
+const productTableGetQuery = (data) => {
+  const name = "productTableGetQuery";
+  const text = `
+    SELECT * FROM products_sales WHERE id=$1`;
+  const values = data;
+  return pool.query(queryGen(name, text, values)).then((res) => res.rows[0]);
+};
+
 module.exports = {
   tablePostQuery,
   tablesGetQuery,
@@ -135,4 +143,5 @@ module.exports = {
   productTableDeleteQuery,
   tableDeleteQuery,
   payTablePutQuery,
+  productTableGetQuery,
 };

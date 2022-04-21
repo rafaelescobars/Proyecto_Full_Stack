@@ -28,8 +28,9 @@ const salesGetQuery = () => {
   const name = "todaySalesByOwner";
   const text = `
     SELECT	o.name AS owner,
-            p.name AS product,
-            SUM(ps.quantity * ps.sale_price) AS total
+      p.name AS product,
+      SUM(ps.quantity) AS quantity,
+      SUM(ps.quantity * ps.sale_price) AS total
     FROM sales s
     JOIN products_sales ps
     ON ps.sale_id=s.id
@@ -38,7 +39,7 @@ const salesGetQuery = () => {
     LEFT JOIN owners o
     ON p.owner_id=o.id
     WHERE s.date=CURRENT_DATE
-      AND s.status=true
+    AND s.status=true
     GROUP BY s.date, o.name, p.name`;
   const values = [];
   return pool.query(queryGen(name, text, values));

@@ -12,6 +12,7 @@ const {
   productTableDeleteQuery,
   tableDeleteQuery,
   payTablePutQuery,
+  productTableGetQuery,
 } = require("../queries/tablesQueries.js");
 
 const {
@@ -313,6 +314,20 @@ router.put("/pay", (req, res) => {
     payTablePutQuery(Object.values(req.body)).then(
       (value) => {
         res.sendStatus(200);
+      },
+      (reason) => {
+        console.log(reason);
+      }
+    );
+  }
+});
+
+router.get("/product/:id", (req, res) => {
+  if (req.loggedUSer != undefined) {
+    const { id } = req.params;
+    productTableGetQuery([id]).then(
+      (value) => {
+        res.send(value);
       },
       (reason) => {
         console.log(reason);

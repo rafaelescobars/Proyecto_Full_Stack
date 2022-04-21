@@ -22,32 +22,60 @@ const subProductTableClick = (e, productTableId, saleId) => {
     saleId,
   };
 
-  const quantitiesCollection = document.getElementsByClassName("quantity");
-
-  const quantities = [...quantitiesCollection];
-
-  quantities.forEach((element) => {
-    if (element.innerHTML * 1 > 1) {
-      // console.log("ok");
-      axios.put("/tables/product/sub", data).then(
-        (value) => {
-          window.location = `/tables/pay/${saleId}`;
-        },
-        (reason) => {
-          console.log(reason);
-        }
-      );
-    } else {
-      axios.delete(`/tables/product`, { data }).then(
-        (value) => {
-          window.location = `/tables`;
-        },
-        (reason) => {
-          console.log(reason);
-        }
-      );
+  axios.get(`/tables/product/${productTableId}`).then(
+    (valueGet) => {
+      // console.log(valueGet.data.quantity);
+      if (valueGet.data.quantity > 1) {
+        axios.put("/tables/product/sub", data).then(
+          (value) => {
+            window.location = `/tables/pay/${saleId}`;
+          },
+          (reason) => {
+            console.log(reason);
+          }
+        );
+      } else {
+        axios.delete(`/tables/product`, { data }).then(
+          (value) => {
+            window.location = `/tables`;
+          },
+          (reason) => {
+            console.log(reason);
+          }
+        );
+      }
+    },
+    (reason) => {
+      console.log(reason);
     }
-  });
+  );
+
+  // const quantitiesCollection = document.getElementsByClassName("quantity");
+
+  // const quantities = [...quantitiesCollection];
+
+  // quantities.forEach((element) => {
+  //   if (element.innerHTML * 1 > 1) {
+  //     console.log("ok");
+  //     axios.put("/tables/product/sub", data).then(
+  //       (value) => {
+  //         window.location = `/tables/pay/${saleId}`;
+  //       },
+  //       (reason) => {
+  //         console.log(reason);
+  //       }
+  //     );
+  //   } else {
+  //     axios.delete(`/tables/product`, { data }).then(
+  //       (value) => {
+  //         window.location = `/tables`;
+  //       },
+  //       (reason) => {
+  //         console.log(reason);
+  //       }
+  //     );
+  //   }
+  // });
 };
 
 const payTable = (e, saleId) => {
