@@ -62,3 +62,15 @@ const deleteProductClick = (e, id) => {
     }
   );
 };
+
+const numberFormat = () => {
+  const pricesCollection = document.getElementsByClassName("price");
+
+  const prices = [...pricesCollection];
+
+  prices.forEach((element) => {
+    element.innerHTML = (element.innerHTML * 1).toLocaleString("de-DE");
+  });
+};
+
+window.onload = numberFormat();

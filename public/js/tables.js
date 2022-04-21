@@ -19,7 +19,7 @@ const getOcupiedTables = () => {
             <td class="d-none" >${saleId}</td>
             <td>${localTable}</td>
             <td>${email}</td>
-            <td>${total}</td>
+            <td>${(total * 1).toLocaleString("de-DE")}</td>
             <td>${status}</td>
             <td>
               <a href="/tables/edit/${saleId}" type="button" class="btn btn-primary">

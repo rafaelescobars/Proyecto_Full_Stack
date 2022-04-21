@@ -10,11 +10,11 @@
   <table class="table table-dark table-hover table-striped align-middle">
     <thead>
       <tr>
-        <td scope="col">Nombre</td>
-        <td scope="col">Descripción</td>
-        <td scope="col">Dueño</td>
-        <td scope="col">Precio</td>
-        <td scope="col">Acción</td>
+        <td >Nombre</td>
+        <td >Descripción</td>
+        <td >Dueño</td>
+        <td >Precio</td>
+        <td >Acción</td>
       </tr>
     </thead>
     <tbody>
@@ -23,7 +23,7 @@
         <td>{{this.name}}</td>
         <td>{{this.description}}</td>
         <td>{{this.owner}}</td>
-        <td>{{this.price}}</td>
+        <td class="price">{{this.price}}</td>
         <td>
           <a href="/products/edit/{{this.id}}" type="button" class="btn btn-primary">
             Editar
@@ -43,5 +43,7 @@
 </div>
 
 <div>
-  {{id}}
+  
 </div>
+
+<script src="/js/products.js"></script>

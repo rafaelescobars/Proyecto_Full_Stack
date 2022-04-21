@@ -11,6 +11,7 @@
     <thead>
       <tr>
         <td scope="col">Dueño</td>
+        <td scope="col">Producto</td>
         <td scope="col">Total</td>
       </tr>
     </thead>
@@ -18,7 +19,8 @@
       {{#each sales}}
       <tr>
         <td>{{this.owner}}</td>
-        <td>{{this.total}}</td>
+        <td>{{this.product}}</td>
+        <td class="total">{{this.total}}</td>
       </tr>
       {{/each}}
     </tbody>
@@ -28,3 +30,5 @@
 <div>
 
 </div>
+
+<script src="/js/sales.js"></script>
