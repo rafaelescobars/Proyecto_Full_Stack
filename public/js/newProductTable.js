@@ -29,6 +29,6 @@ const newProductTablePost = (e) => {
 
   axios.post(`/tables/product/new`, data).then((value) => {
     console.log(value);
-    window.location = `/tables/edit/${value.data.sale_id}`;
+    window.location = `/tables/pay/${value.data.sale_id}`;
   });
 };

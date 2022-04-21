@@ -22,11 +22,8 @@ const getOcupiedTables = () => {
             <td>${(total * 1).toLocaleString("de-DE")}</td>
             <td>${status}</td>
             <td>
-              <a href="/tables/edit/${saleId}" type="button" class="btn btn-primary">
-                Ver/Editar
-              </a>
               <a href="/tables/pay/${saleId}" type="button" class="btn btn-warning">
-              Pagar
+              Ver / Editar / Pagar
             </a>
             </td>`;
             }
