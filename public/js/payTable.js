@@ -111,23 +111,10 @@ const numberFormat = () => {
   totals.forEach((element) => {
     element.innerHTML = (element.innerHTML * 1).toLocaleString("de-DE");
   });
-};
-
-window.addEventListener("load", numberFormat());
-
-const total = () => {
-  const totalsCollection = document.getElementsByClassName("total");
-
-  const totals = [...totalsCollection];
-
-  let total = 0;
-  totals.forEach((element) => {
-    total += element.innerHTML * 1000;
-  });
 
   const tdTotal = document.getElementById("total");
 
-  tdTotal.innerHTML = total.toLocaleString("de-DE");
+  tdTotal.innerHTML = (tdTotal.innerHTML * 1).toLocaleString("de-DE");
 };
 
-window.addEventListener("load", total());
+window.addEventListener("load", numberFormat());

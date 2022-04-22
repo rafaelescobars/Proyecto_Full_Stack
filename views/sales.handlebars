@@ -26,11 +26,36 @@
       </tr>
       {{/each}}
     </tbody>
+    <tfoot>
+      <td>Total</td>
+      <td></td>
+      <td></td>
+      <td id="total-sales">{{totalSales}}</td>
+    </tfoot>
   </table>
 </div>
 
-<div>
-
+<div class="table-responsive container">
+  <table class="table table-dark table-hover table-striped align-middle">
+    <thead>
+      <tr>
+        <td >Tipo de pago</td>
+        <td >Total</td>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each paymentTypes}}
+      <tr>
+        <td>{{this.payment_type}}</td>
+        <td class="total">{{this.total}}</td>
+      </tr>
+      {{/each}}
+    </tbody>
+    <tfoot>
+      <td>Total</td>
+      <td id="total-payment-type">{{totalPaymentType}}</td>
+    </tfoot>
+  </table>
 </div>
 
 <script src="/js/sales.js"></script>

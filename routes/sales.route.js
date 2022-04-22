@@ -1,18 +1,17 @@
 const jwt = require("jsonwebtoken");
 const { Router } = require("express");
 
-const { salesGetQuery } = require("../queries/salesQueries.js");
+const {
+  salesGetQuery,
+  totalSalesGetQuery,
+  paymentTypesGetQuery,
+  totalPaymentTypesGetQuery,
+} = require("../queries/salesQueries.js");
 
 const secretKey = process.env.SECRET_KEY;
 
 const router = Router();
 
-//body-parser
-// const bodyParser = require("body-parser");
-// router.use(bodyParser.urlencoded({ extended: false }));
-// router.use(bodyParser.json());
-
-//middleware /
 router.use("/", (req, res, next) => {
   try {
     req.loggedUSer = jwt.verify(req.cookies.token, secretKey).data;
@@ -25,14 +24,38 @@ router.use("/", (req, res, next) => {
 //Route users GET
 router.get("/", (req, res) => {
   if (req.loggedUSer != undefined && req.loggedUSer.admin == true) {
-    salesGetQuery().then((value) => {
-      // console.log(value);
-      res.render("sales", {
-        userType: req.loggedUSer.admin,
-        userId: req.loggedUSer.id,
-        userEmail: req.loggedUSer.email,
-        sales: value.rows,
-      });
+    salesGetQuery().then((salesValue) => {
+      totalSalesGetQuery().then(
+        (totalSalesValue) => {
+          paymentTypesGetQuery().then(
+            (paymentTypesValue) => {
+              totalPaymentTypesGetQuery().then(
+                (totalPaymentTypesValue) => {
+                  // console.log(paymentTypesValue);
+                  res.render("sales", {
+                    userType: req.loggedUSer.admin,
+                    userId: req.loggedUSer.id,
+                    userEmail: req.loggedUSer.email,
+                    sales: salesValue.rows,
+                    totalSales: totalSalesValue.total,
+                    paymentTypes: paymentTypesValue,
+                    totalPaymentType: totalPaymentTypesValue.total,
+                  });
+                },
+                (reason) => {
+                  console.log(reason);
+                }
+              );
+            },
+            (reason) => {
+              console.log(reason);
+            }
+          );
+        },
+        (reason) => {
+          console.log(reason);
+        }
+      );
     });
   } else {
     res.redirect("/login");

@@ -132,6 +132,16 @@ const productTableGetQuery = (data) => {
   return pool.query(queryGen(name, text, values)).then((res) => res.rows[0]);
 };
 
+const totalTableGetQuery = (data) => {
+  const name = "totalTableGetQuery";
+  const text = `
+  SELECT SUM(ps.quantity*ps.sale_price) AS total
+  FROM products_sales AS ps
+  WHERE sale_id=$1`;
+  const values = data;
+  return pool.query(queryGen(name, text, values)).then((res) => res.rows[0]);
+};
+
 module.exports = {
   tablePostQuery,
   tablesGetQuery,
@@ -144,4 +154,5 @@ module.exports = {
   tableDeleteQuery,
   payTablePutQuery,
   productTableGetQuery,
+  totalTableGetQuery,
 };

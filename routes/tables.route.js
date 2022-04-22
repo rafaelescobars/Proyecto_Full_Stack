@@ -13,6 +13,7 @@ const {
   tableDeleteQuery,
   payTablePutQuery,
   productTableGetQuery,
+  totalTableGetQuery,
 } = require("../queries/tablesQueries.js");
 
 const {
@@ -286,16 +287,22 @@ router.get("/pay/:saleId", (req, res) => {
     const { saleId, localTable } = req.params;
     // console.log(saleId);
     tableGetQuery([saleId]).then(
-      (value) => {
-        // console.log(value);
-        res.render("payTable", {
-          saleId,
-          tableProducts: value,
-          localTable: value[0].local_table,
-          userType: req.loggedUSer.admin,
-          userId: req.loggedUSer.id,
-          userEmail: req.loggedUSer.email,
-        });
+      (tableValue) => {
+        totalTableGetQuery([saleId]).then(
+          (totalTableValue) => {
+            // console.log(totalTableValue);
+            res.render("payTable", {
+              saleId,
+              tableProducts: tableValue,
+              total: totalTableValue.total,
+              localTable: tableValue[0].local_table,
+              userType: req.loggedUSer.admin,
+              userId: req.loggedUSer.id,
+              userEmail: req.loggedUSer.email,
+            });
+          },
+          (reason) => {}
+        );
       },
       (reason) => {
         console.log(reason);
